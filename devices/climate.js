@@ -71,6 +71,20 @@ module.exports = class devLight extends device {
 				info.temperature_state_topic = this.attributes["target_temperature"].full_mqtt_topic;
 		}
 
+		// Support home-assistant discover options
+		// https://www.home-assistant.io/integrations/mqtt/
+		[
+			'device_class',
+			'value_template',
+			'current_temperature_template',
+			'temperature_command_template',
+			'name',
+		].forEach((key) => {
+			if(this.config[key]) {
+				info[key] = this.config[key];
+			}
+		});
+
 		super.send_discover_msg(info);
 	}
 

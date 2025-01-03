@@ -19,13 +19,7 @@ module.exports = class devNumber extends device {
 	}
 
 	send_discover_msg() {
-		let info = {
-			name: this.config.name,
-			min: this.config.min,
-			max: this.config.max,
-			step: this.config.step
-
-		};
+		let info = {};
 
 		if (this.attributes["state"]) {
 			// add only command_topic if the attribute is allowed to write
@@ -36,6 +30,25 @@ module.exports = class devNumber extends device {
 			if (this.attributes["state"].publish_to_mqtt)
 				info.state_topic = this.attributes["state"].full_mqtt_topic;
 		}
+
+		// Support more discover options from home-assistant
+		// https://www.home-assistant.io/integrations/mqtt/
+		[
+			'unit_of_measurement',
+			'device_class',
+			'value_template',
+			'command_template',
+			'name',
+			'mode',
+			'step',
+			'min',
+			'max',
+		].forEach((key) => {
+			if(this.config[key]) {
+				info[key] = this.config[key];
+			}
+		});
+
 
 		super.send_discover_msg(info);
 	}

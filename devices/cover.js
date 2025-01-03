@@ -66,6 +66,17 @@ module.exports = class devCover extends device {
 		if (this.attributes["currentPosition"])
 			info.position_topic = this.attributes["currentPosition"].full_mqtt_topic;
 
+		// Support home-assistant discover options
+		// https://www.home-assistant.io/integrations/mqtt/
+		[
+			'device_class',
+			'name',
+		].forEach((key) => {
+			if(this.config[key]) {
+				info[key] = this.config[key];
+			}
+		});
+
 		super.send_discover_msg(info);
 	}
 

@@ -37,7 +37,7 @@ module.exports = class devSensor extends device {
 			}
 		}
 
-		// Support more discover options from home-assistant
+		// Support home-assistant discover options
 		// https://www.home-assistant.io/integrations/mqtt/
 		[
 			'unit_of_measurement',
