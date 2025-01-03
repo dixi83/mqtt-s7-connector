@@ -173,7 +173,7 @@ module.exports = class attribute {
 	// according to type
 	//
 	// @param msg String mqtt message
-	// 				type	String	PLC type (X/BYTE/REAL)
+	// 				type	String	PLC type (X/BYTE/REAL/INT)
 	//
 	// @return	Array[0]	Error code, 0="OK", -1="type not found", -2="cant format type"
 	//							Array[1]	formatted variable
@@ -205,6 +205,15 @@ module.exports = class attribute {
 				if (isNaN(write)) {
 					if (noDebugOut)
 						sf.debug("can´t format incoming message '" + msg + "' -> skipping it");
+					return [-2];
+				}
+				break;
+
+			case "INT":
+				write = parseInt(msg, 10);
+				if (isNaN(write)) {
+					if (noDebugOut)
+						sf.debug("can't format incoming message '" + msg + "' -> skipping it");
 					return [-2];
 				}
 				break;
