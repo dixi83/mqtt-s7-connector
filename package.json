@@ -31,10 +31,11 @@
   },
   "license": "ISC",
   "dependencies": {
+    "ajv": "^8.17.1",
+    "commander": "^11.1.0",
     "fastq": "^1.11.0",
     "mqtt": "^4.2.8",
     "nodes7": "^0.3.18",
-    "commander": "^11.1.0",
     "yaml": "^2.3.4"
   }
 }

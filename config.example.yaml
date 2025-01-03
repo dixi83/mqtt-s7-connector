@@ -1,4 +1,4 @@
-# $schema: ./config_schema.json
+# $schema: ./config_schema.yaml
 
 ---
 update_time: 10000
@@ -11,20 +11,20 @@ retain_messages: true
 discovery_prefix: homeassistant
 discovery_retain: false
 
-plc: 
+plc:
   port: 102
   host: 192.168.2.10
   rack: 0
   slot: 2
   debug: false
-  
-mqtt: 
+
+mqtt:
   host: mqtts://host.com:1234
   user: u
   password: p
   rejectUnauthorized: true
 
-devices:  
+devices:
   - name: Dimmable Light
     type: light
     state: DB56,X150.0
@@ -67,13 +67,13 @@ devices:
     state: DB56,X150.0
   - name: Light Readonly Interval
     type: light
-    state: 
+    state:
       plc: DB56,X150.0
       rw: r
       update_interval: 5000
   - name: Switch Write only
     type: switch
-    state: 
+    state:
       plc: DB56,X150.0
       rw: w
   - name: User defined mqtt topic name
@@ -82,22 +82,40 @@ devices:
     state: DB56,X150.0
   - name: Sensor with unit of measurement
     type: sensor
-    state: 
+    state:
       plc: DB56,X150.0
-      unit_of_measurement: km/h
+    unit_of_measurement: km/h
   - name: Sensor with unit of measurement
     type: sensor
-    state: 
+    state:
       plc: DB56,X150.0
-      unit_of_measurement: km/h
+    unit_of_measurement: km/h
   - name: Switch with different RW address
     type: switch
-    state: 
+    state:
       plc: DB56,X150.0
       set_plc: DB56,X150.1
 
   # Example of a device with two entities
   - device_name: DevTest Sensor 1
+    name: Temperatur
+    manufacturer: Psi-Systems
+    type: sensor
+    state: DB4,INT48
+    unit_of_measurement: "°C"
+    value_template: "{{ (value | float / 10) | round(2) }}"
+    device_class: temperature
+
+  - device_name: DevTest Sensor 1
+    name: Humidity
+    type: sensor
+    state: DB4,INT50
+    unit_of_measurement: "%"
+    value_template: "{{ (value | float / 10) | round(2) }}"
+    device_class: humidity
+
+  # Example of a device with one entity
+  - device_name: DevTest Sensor 2
     name: Temperatur
     manufacturer: Psi-Systems
     type: sensor

@@ -5,10 +5,12 @@
 let mqtt_handler = require('./mqtt_handler');
 let plc_handler = require('./plc');
 let config_handler = require('./config_handler')
+const validateConfig = require('./config_validator');
 let sf = require('./service_functions');
 let device_factory = require('./device_factory');
 
 let config = config_handler.config();
+validateConfig(config);
 let mqtt = mqtt_handler.setup(config.mqtt, mqttMsgParser, init);
 let plc = plc_handler.setup(config.plc, init);
 
