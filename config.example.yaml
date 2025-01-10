@@ -1,4 +1,4 @@
-# $schema: ./config_schema.yaml
+# yaml-language-server: $schema=./config_schema.yaml
 
 ---
 update_time: 10000
