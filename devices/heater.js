@@ -33,6 +33,7 @@ module.exports = class devHeater extends device {
 
 		// mode topic
 		this.modeStateTopic = this.full_mqtt_topic + "/mode";
+		this.lastMode = null;
 	}
 
 	/**
@@ -67,14 +68,18 @@ module.exports = class devHeater extends device {
 	 * Update the mode based on the target temperature
 	 */
 	updateMode(targetTemperature) {
-		if(!Number.isFinite(targetTemperature)) {
+		if(Number.isFinite(targetTemperature)) {
 			// Set to heat if target-temp is gt than heatMode_temperature_threshold config value
-			const newMode = targetTemperature > (this.config.heatMode_temperature_threshold || 4) ? 'heat' : 'off';
-			sf.debug(`Setting mode to ${newMode} based on target temperature ${targetTemperature}`);
+			const threshold = this.config.heatMode_temperature_threshold || 4;
+			const newMode = targetTemperature > threshold ? 'heat' : 'off';
+			if (this.lastMode === newMode) return;
+			this.lastMode = newMode;
+			sf.debug(`Setting mode to ${newMode} based on target temperature ${targetTemperature}, threshold ${threshold}`);
+			this.lastMode = newMode;
 			this.mqtt_handler.publish(this.modeStateTopic, newMode, {retain: true});
 			// HA updates the widget with current values on any mqtt messages
 			// We publish back the target_temperature before reading it from the PLC to avoid flickering
-			this.mqtt_handler.publish(this.attributes["target_temperature"].full_mqtt_topic, targetTemperature, {retain: true});
+			this.mqtt_handler.publish(this.attributes["target_temperature"].full_mqtt_topic, targetTemperature.toString(), {retain: true});
 		}
 	}
 
