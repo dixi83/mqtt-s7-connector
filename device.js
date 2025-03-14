@@ -1,5 +1,7 @@
-let attribute = require("./attribute.js");
-let sf = require('./service_functions.js');
+const attribute = require("./attribute.js");
+const sf = require('./service_functions.js');
+const appConfigHandler = require('./config_handler');
+const appConfig = appConfigHandler.config();
 
 module.exports = class device {
 	constructor(plc, mqtt, config) {
@@ -10,7 +12,7 @@ module.exports = class device {
 		this.config = config;
 
 		this.discovery_topic = "homeassistant";
-		this.discovery_retain = false;
+		this.discovery_retain = appConfig.discovery_retain || false;
 		this.type = config["type"].toLowerCase();
 		this.ha_component = this.type; // default is the type but can be overwritten
 
