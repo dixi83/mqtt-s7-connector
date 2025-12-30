@@ -10,12 +10,13 @@ module.exports = class device {
 		this.config = config;
 
 		this.discovery_topic = "homeassistant";
-		this.discovery_retain = false;
+		this.discovery_retain = config["discovery_retain"];
 		this.type = config["type"].toLowerCase();
 
 		// device topics
 		this.mqtt_name = config["mqtt"];
 		this.full_mqtt_topic = config["mqtt_base"] + "/" + this.mqtt_name;
+		this.retain_messages = config["retain_messages"];
 
 		// store all attribute objects in this array
 		this.attributes = {};
@@ -28,7 +29,9 @@ module.exports = class device {
 			this.mqtt_handler,
 			name,
 			required_type,
-			this.full_mqtt_topic);
+			this.full_mqtt_topic,
+			this.retain_messages
+		);
 
 		// the config could be an object
 		// or simply a string

@@ -1,9 +1,10 @@
 let sf = require("./service_functions.js");
 
 module.exports = class attribute {
-	constructor(plc, mqtt, name, type, mqtt_device_topic) {
+	constructor(plc, mqtt, name, type, mqtt_device_topic, retain) {
 		this.plc_handler = plc;
 		this.mqtt_handler = mqtt;
+		this.retain_messages = retain;
 
 		this.last_update = 0;
 		this.last_value = null;
